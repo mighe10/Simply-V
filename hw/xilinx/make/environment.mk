@@ -61,13 +61,21 @@ endif
 
 # Remove Microblaze-V and Microblaze Debug Module V when building with Vivado < 2024
 # TODO55: quick workaround for PR 146, extend this for all selectable IPs
-ifeq ($(shell [ $(XILINX_VIVADO_VERSION) -lt 2024 ] && echo true),true)
-    FILTER_IP                 := xlnx_microblazev_rv32 xlnx_microblazev_rv64 xlnx_microblaze_debug_module_v
+
+VIVADO_MAJOR                  := $(firstword $(subst ., ,$(XILINX_VIVADO_VERSION)))
+
+ifeq ($(shell [ -n "$(VIVADO_MAJOR)" ] && [ $(VIVADO_MAJOR) -lt 2024 ] && echo true),true)
+    FILTER_IP_XCI             := $(foreach ip,${FILTER_IP},${XILINX_IPS_ROOT}/common/${ip}/build/${ip}_prj.srcs/sources_1/ip/${ip}/${ip}.xci)
     FILTER_IP_XCI             := $(foreach ip,${FILTER_IP},${XILINX_IPS_ROOT}/common/${ip}/build/${ip}_prj.srcs/sources_1/ip/${ip}/${ip}.xci)
     TMP_XILINX_IP_LIST        := ${XILINX_IP_LIST}
     TMP_XILINX_IP_LIST_XCI    := ${XILINX_IP_LIST_XCI}
     XILINX_IP_LIST            := $(filter-out $(FILTER_IP),$(TMP_XILINX_IP_LIST))
     XILINX_IP_LIST_XCI        := $(filter-out $(FILTER_IP_XCI),$(TMP_XILINX_IP_LIST_XCI))
+
+	 # Log diagnostico
+    $(info [IP-FILTER] Vivado=$(XILINX_VIVADO_VERSION) (major=$(VIVADO_MAJOR)))
+    $(info [IP-FILTER] Removed IPs: $(filter $(FILTER_IP),$(TMP_XILINX_IP_LIST)))
+    $(info [IP-FILTER] Removed XCIs: $(filter $(FILTER_IP_XCI),$(TMP_XILINX_IP_LIST_XCI)))
 endif
 
 # Concatenate/create the final IP lists

@@ -106,6 +106,8 @@ void XAxiCdma_IntrEnable(XAxiCdma *InstancePtr, uint32_t Mask);
 void XAxiCdma_IntrDisable(XAxiCdma *InstancePtr, uint32_t Mask);
 uint32_t XAxiCdma_IntrGetEnabled(XAxiCdma *InstancePtr);
 uint32_t XAxiCdma_GetError(XAxiCdma *InstancePtr);
+uint32_t XAxiCdma_IntrGetIrq(XAxiCdma *InstancePtr);
+void     XAxiCdma_IntrAckIrq(XAxiCdma *InstancePtr, uint32_t Mask);
 
 #ifdef __cplusplus
 }

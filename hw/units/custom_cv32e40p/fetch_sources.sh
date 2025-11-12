@@ -58,6 +58,6 @@ done;
 
 # Delete the cloned repo and temporary flist
 printf "${YELLOW}[FETCH_SOURCES] Clean all artifacts${NC}\n"
-sudo rm -r ${CLONE_DIR}
+#sudo rm -r ${CLONE_DIR}
 rm *.flist
 printf "${GREEN}[FETCH_SOURCES] Completed${NC}\n"

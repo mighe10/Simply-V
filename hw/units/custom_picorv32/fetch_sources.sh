@@ -26,5 +26,5 @@ cp picorv32.v ../rtl
 # Delete the repo AND flist
 printf "${YELLOW}[FETCH_SOURCES] Clean all artifacts${NC}\n"
 cd ..;
-sudo rm -r picorv32
+#sudo rm -r picorv32
 printf "${GREEN}[FETCH_SOURCES] Completed${NC}\n"

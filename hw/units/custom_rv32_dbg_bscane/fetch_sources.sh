@@ -54,6 +54,6 @@ done
 
 # Delete the cloned repo and temporary flist
 printf "${YELLOW}[FETCH_SOURCES] Clean all artifacts${NC}\n"
-sudo rm -rf ${CLONE_DIR}
+#sudo rm -rf ${CLONE_DIR}
 rm rtl.flist bender
 printf "${GREEN}[FETCH_SOURCES] Completed${NC}\n"
