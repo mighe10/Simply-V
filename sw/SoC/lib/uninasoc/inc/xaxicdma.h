@@ -1,6 +1,8 @@
 /******************************************************************************
 * Simplified & adapted for UninaSoC / Baremetal RISC-V
-* Original Copyright (C) Xilinx, Inc. / AMD
+ * Authors:
+ *   - Michele Giugliano <michele.giugliano2@studenti.unina.it>
+ *   - Original base: Xilinx / AMD Copyright © 2010–2023
 * SPDX-License-Identifier: MIT
 ******************************************************************************/
 

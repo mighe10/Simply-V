@@ -11,10 +11,8 @@
 #include "xaxicdma_hw.h"
 #include "io.h"
 #include <stdint.h>
-#include <stdio.h>
 #include "tinyIO.h" 
-#define puts(str)   c_printf("%s\n", str)
-#define printf      c_printf
+
 /**************************** Helper macros ****************************/
 #define XST_SUCCESS        0
 #define XST_FAILURE       -1
@@ -180,4 +178,72 @@ void XAxiCdma_DumpRegisters(XAxiCdma *InstancePtr) {
     printf("BTT  : 0x%08x\r\n", XAxiCdma_ReadReg(base, XAXICDMA_BTT_OFFSET));
     printf("==========================\r\n");
 }
+
+
+/******************************************************************************
+ * Enable CDMA interrupts by setting the interrupt bits in the Control Register.
+ *
+ * @param InstancePtr  Pointer to the CDMA driver instance.
+ * @param Mask         Bitmask of interrupts to enable.
+ *
+ * Notes:
+ *  - Xilinx AXI CDMA uses the Control Register (CR) low bits to enable IRQs.
+ *  - The most common mask is:
+ *        XAXICDMA_CR_IRQ_EN_MASK
+ *    which enables:
+ *        - IOC_IrqEn (Completion Interrupt)
+ *        - Err_IrqEn (Error Interrupt)
+ ******************************************************************************/
+void XAxiCdma_IntrEnable(XAxiCdma *InstancePtr, uint32_t Mask)
+{
+    uint32_t Reg;
+
+    /* Read current Control Register value */
+    Reg = XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET);
+
+    /* Set bits according to mask */
+    Reg |= Mask;
+
+    /* Write back to Control Register */
+    XAxiCdma_WriteReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET, Reg);
+}
+
+/******************************************************************************
+ * Disable CDMA interrupts by clearing the interrupt bits in the Control Register.
+ *
+ * @param InstancePtr  Pointer to the CDMA driver instance.
+ * @param Mask         Bitmask of interrupts to disable.
+ ******************************************************************************/
+void XAxiCdma_IntrDisable(XAxiCdma *InstancePtr, uint32_t Mask)
+{
+    uint32_t Reg;
+
+    /* Read current Control Register value */
+    Reg = XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET);
+
+    /* Clear bits specified by mask */
+    Reg &= ~Mask;
+
+    /* Write back to Control Register */
+    XAxiCdma_WriteReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET, Reg);
+}
+
+/******************************************************************************
+ * Read currently enabled interrupt bits from the Control Register.
+ *
+ * @param InstancePtr  Pointer to the CDMA driver instance.
+ *
+ * @return Mask of enabled interrupts.
+ ******************************************************************************/
+uint32_t XAxiCdma_IntrGetEnabled(XAxiCdma *InstancePtr)
+{
+    uint32_t Reg;
+
+    /* Read Control Register */
+    Reg = XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET);
+
+    /* Return only interrupt-related bits */
+    return (Reg & XAXICDMA_CR_IRQ_EN_MASK);
+}
+
 

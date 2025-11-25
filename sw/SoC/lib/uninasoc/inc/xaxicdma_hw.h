@@ -1,7 +1,8 @@
 /******************************************************************************
 * Simplified & adapted for UninaSoC / Baremetal RISC-V
-* Original Copyright (C) Xilinx, Inc. / AMD
-*
+ * Authors:
+ *   - Michele Giugliano <michele.giugliano2@studenti.unina.it>
+ *   - Original base: Xilinx / AMD Copyright © 2010–2023
 * SPDX-License-Identifier: MIT
 ******************************************************************************/
 
@@ -34,6 +35,8 @@ extern "C" {
 #define XAXICDMA_CR_KHOLE_RD_MASK   0x00000010  /**< Keyhole Read */
 #define XAXICDMA_CR_KHOLE_WR_MASK   0x00000020  /**< Keyhole Write */
 
+
+
 /* Status Register Bits */
 #define XAXICDMA_SR_IDLE_MASK         0x00000002  /**< DMA channel idle */
 #define XAXICDMA_SR_SGINCLD_MASK      0x00000008  /**< Hybrid build */
@@ -47,6 +50,10 @@ extern "C" {
 #define XAXICDMA_XR_IRQ_DELAY_MASK    0x00002000  /**< Delay interrupt */
 #define XAXICDMA_XR_IRQ_ERROR_MASK    0x00004000  /**< Error interrupt */
 #define XAXICDMA_XR_IRQ_ALL_MASK      0x00007000  /**< All interrupts */
+
+/* Control Register interrupt enable mask (IOC + ERROR) */
+#define XAXICDMA_CR_IRQ_EN_MASK  (XAXICDMA_XR_IRQ_IOC_MASK | XAXICDMA_XR_IRQ_ERROR_MASK)
+
 
 /* Delay/Coalescing counters */
 #define XAXICDMA_XR_DELAY_MASK    0xFF000000
@@ -80,6 +87,9 @@ extern "C" {
 
 #define XAxiCdma_WriteReg(BaseAddress, RegOffset, Data) \
     iowrite32((BaseAddress) + (RegOffset), (Data))
+    
+
+
 
 #ifdef __cplusplus
 }

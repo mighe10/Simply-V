@@ -10,7 +10,7 @@
 #include "io.h"
 #include <stdint.h>
 
-#define MAX_SOURCES 3
+#define MAX_SOURCES 7
 
 // In this example, only 4 interrupts sources are supported in the SoC
 
