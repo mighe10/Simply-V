@@ -217,7 +217,7 @@ void XAxiCdma_IntrDisable(XAxiCdma *InstancePtr, uint32_t Mask)
 	RegValue = XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET);
 
 	XAxiCdma_WriteReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET,
-			  RegValue & ~(Mask & XAXICDMA_XR_IRQ_ALL_MASK));
+			  RegValue | (Mask & XAXICDMA_XR_IRQ_ALL_MASK));
 }
 
 /******************************************************************************
