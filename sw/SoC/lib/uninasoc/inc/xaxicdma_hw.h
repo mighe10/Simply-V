@@ -50,9 +50,8 @@ extern "C" {
 #define XAXICDMA_XR_IRQ_DELAY_MASK    0x00002000  /**< Delay interrupt */
 #define XAXICDMA_XR_IRQ_ERROR_MASK    0x00004000  /**< Error interrupt */
 #define XAXICDMA_XR_IRQ_ALL_MASK      0x00007000  /**< All interrupts */
-
-/* Control Register interrupt enable mask (IOC + ERROR) */
-#define XAXICDMA_CR_IRQ_EN_MASK  (XAXICDMA_XR_IRQ_IOC_MASK | XAXICDMA_XR_IRQ_ERROR_MASK)
+#define XAXICDMA_XR_IRQ_SIMPLE_ALL_MASK	0x00005000 /**< All interrupts for
+                                                        simple only mode */
 
 
 /* Delay/Coalescing counters */

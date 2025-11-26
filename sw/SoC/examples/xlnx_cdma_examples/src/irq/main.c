@@ -10,7 +10,7 @@
 #include "xaxicdma.h"
 #include "xaxicdma_hw.h"
 #include <stdint.h>
-#include <stdio.h>
+
 
 /* ============================================================
  * CDMA Base Address
@@ -134,8 +134,16 @@ int main(void)
     plic_init();
 
     /* Priorities array — CDMA gets priority 1 */
-    uint32_t prio[7] = {0};
-    prio[CDMA_IRQ_ID] = 1;
+    uint32_t prio[7] = 
+    {   0,  // 0: non usato
+        1,  // 1: GPIO o altro
+        1,  // 2
+        1,  // 3
+        1,  // 4 (se serve)
+        1,  // 5 (se serve)
+        2   // 6: CDMA
+    };
+    
     plic_configure(prio, 7);
 
     /* Enable all sources configured */
@@ -177,7 +185,7 @@ int main(void)
         NULL, NULL
     );
 
-    if (st != XST_SUCCESS) {
+    if (st != UNINASOC_OK) {
         printf("SimpleTransfer ERROR %d!\n", st);
         while (1);
     }

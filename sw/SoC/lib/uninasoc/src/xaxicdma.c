@@ -196,16 +196,12 @@ void XAxiCdma_DumpRegisters(XAxiCdma *InstancePtr) {
  ******************************************************************************/
 void XAxiCdma_IntrEnable(XAxiCdma *InstancePtr, uint32_t Mask)
 {
-    uint32_t Reg;
+    uint32_t RegValue;
 
-    /* Read current Control Register value */
-    Reg = XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET);
+    RegValue = XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET);
 
-    /* Set bits according to mask */
-    Reg |= Mask;
-
-    /* Write back to Control Register */
-    XAxiCdma_WriteReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET, Reg);
+    XAxiCdma_WriteReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET,
+			  RegValue | (Mask & XAXICDMA_XR_IRQ_ALL_MASK));
 }
 
 /******************************************************************************
@@ -216,16 +212,12 @@ void XAxiCdma_IntrEnable(XAxiCdma *InstancePtr, uint32_t Mask)
  ******************************************************************************/
 void XAxiCdma_IntrDisable(XAxiCdma *InstancePtr, uint32_t Mask)
 {
-    uint32_t Reg;
+	uint32_t RegValue;
 
-    /* Read current Control Register value */
-    Reg = XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET);
+	RegValue = XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET);
 
-    /* Clear bits specified by mask */
-    Reg &= ~Mask;
-
-    /* Write back to Control Register */
-    XAxiCdma_WriteReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET, Reg);
+	XAxiCdma_WriteReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET,
+			  RegValue & ~(Mask & XAXICDMA_XR_IRQ_ALL_MASK));
 }
 
 /******************************************************************************
@@ -237,13 +229,8 @@ void XAxiCdma_IntrDisable(XAxiCdma *InstancePtr, uint32_t Mask)
  ******************************************************************************/
 uint32_t XAxiCdma_IntrGetEnabled(XAxiCdma *InstancePtr)
 {
-    uint32_t Reg;
-
-    /* Read Control Register */
-    Reg = XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET);
-
-    /* Return only interrupt-related bits */
-    return (Reg & XAXICDMA_CR_IRQ_EN_MASK);
+    return (XAxiCdma_ReadReg(InstancePtr->BaseAddr, XAXICDMA_CR_OFFSET) &
+		XAXICDMA_XR_IRQ_ALL_MASK);
 }
 
 
